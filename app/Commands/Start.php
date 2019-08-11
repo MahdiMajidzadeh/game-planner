@@ -3,15 +3,12 @@
 namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
-use LaravelZero\Framework\Commands\Command;
 
-class Start extends Command
+class Start extends Base
 {
     protected $signature = 'start';
 
     protected $description = 'start game';
-
-    private $names = [];
 
     public function handle()
     {
@@ -27,10 +24,7 @@ class Start extends Command
 
         $this->names = $names;
 
-        while (count($this->names) > 1) {
-            $this->alert('^Next Round^');
-            $competitors = $this->planner($this->names);
-            $this->names = [];
+        $this->do();
 
             foreach ($competitors as $competitor) {
                 if (count($competitor) == 1) {
@@ -48,15 +42,6 @@ class Start extends Command
         }
 
         $this->info('Winner is: ' . $this->names[0]);
-    }
-
-    private function planner($names)
-    {
-        if (count($names) % 2 == 1) {
-            $names = array_reverse($names);
-        }
-
-        return array_chunk($names, 2);
     }
 
     public function schedule(Schedule $schedule): void
