@@ -2,11 +2,10 @@
 
 namespace App\Commands;
 
-use App\Services\Planner;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
-class Start extends Command
+class Restart extends Command
 {
     protected $signature = 'start';
 
@@ -24,10 +23,9 @@ class Start extends Command
         }
         shuffle($names);
 
-        $planner = new Planner();
+        $this->names = $names;
 
-        $planner->setName($names);
-        $planner->plan($this);
+        $this->do();
     }
 
     public function schedule(Schedule $schedule): void
