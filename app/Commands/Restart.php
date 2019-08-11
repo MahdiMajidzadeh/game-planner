@@ -2,30 +2,30 @@
 
 namespace App\Commands;
 
+use App\Services\Planner;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
 class Restart extends Command
 {
-    protected $signature = 'start';
+    protected $signature = 'restart';
 
-    protected $description = 'start game';
+    protected $description = 'restart game';
 
     public function handle()
     {
-        $names = [];
-        while (true) {
-            $input = $this->ask('Enter Player name:');
-            if ($input == 'exit' || $input == '0') {
-                break;
-            }
-            $names[] = $input;
+        if(!Storage::exists('names.json')){
+            $this->error('no names saved!');
+            return;
         }
+        $names = json_decode(Storage::get('names.json'), true);
+
         shuffle($names);
 
-        $this->names = $names;
-
-        $this->do();
+        $planner = new Planner();
+        $planner->setName($names);
+        $planner->plan($this);
     }
 
     public function schedule(Schedule $schedule): void

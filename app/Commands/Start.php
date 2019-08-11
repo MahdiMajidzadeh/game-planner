@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use App\Services\Planner;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
@@ -22,10 +23,12 @@ class Start extends Command
             }
             $names[] = $input;
         }
+
+        Storage::put("names.json", json_encode($names));
+
         shuffle($names);
 
         $planner = new Planner();
-
         $planner->setName($names);
         $planner->plan($this);
     }
