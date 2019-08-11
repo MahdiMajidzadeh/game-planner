@@ -38,9 +38,9 @@ class Start extends Command
                     break;
                 }
 
-                do{
-                    $choice = $this->ask($competitor[0] . ' vs. ' . $competitor[1]);
-                }while(! in_array($choice, $competitor));
+                do {
+                    $choice = $this->choice($competitor[0] . ' vs. ' . $competitor[1], $competitor);
+                } while (!in_array($choice, $competitor));
 
                 $this->names[] = $choice;
 //                $this->names[] = $this->choice('winner: ', $competitor);
