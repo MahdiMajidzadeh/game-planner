@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use NumberToWords\NumberToWords;
+
 class Planner
 {
     public $names;
@@ -17,8 +19,12 @@ class Planner
 
     public function plan($class)
     {
+        $round = 0;
         while (count($this->names) > 1) {
-            $class->alert('^Next Round^');
+            $round         += 1;
+            $numberToWords = new NumberToWords();
+
+            $class->alert('^ Round:' . $numberToWords->getNumberTransformer('en')->toWords($round) . ' ^');
             $competitors = self::shuffler($this->names);
             $this->names = [];
 

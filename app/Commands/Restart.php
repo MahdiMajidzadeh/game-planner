@@ -21,6 +21,8 @@ class Restart extends Command
         }
         $names = json_decode(Storage::get('names.json'), true);
 
+        $this->table(['name...'], [$names]);
+
         shuffle($names);
 
         $planner = new Planner();
